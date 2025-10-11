@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <title>Authora: Login</title>
+        <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+        <link rel="stylesheet" href="https://horizon-ui.com/shadcn-nextjs-boilerplate/_next/static/css/32144b924e2aa5af.css"/>
+        <style>
+          @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+          * {
+            font-family: 'Inter', sans-serif;
+          }
+
+          body {
+            background: oklch(13.979% 0.00002 271.152);
+            min-height: 100vh;
+          }
+
+          .glass-card {
+            background: rgb(6, 6, 6);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+          }
+
+          .input-field {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+          }
+
+          .input-field:focus {
+            outline: none;
+          }
+
+          .btn-primary {
+            background: linear-gradient(135deg, #ffffff 0%, #e5e5e5 100%);
+            transition: all 0.3s ease;
+            cursor: pointer;
+          }
+
+          .logo-text {
+            background: linear-gradient(135deg, #ffffff 0%, #a0a0a0 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+          }
+
+        </style>
+
+    </head>
+    <body>
+        <div class="flex items-center justify-center min-h-screen p-4">
+            <div class="w-full max-w-md">
+                <div class="text-center mb-8">
+                    <h1 class="text-4xl font-bold logo-text mb-2">Authora</h1>
+                    <p class="text-gray-400 text-sm">Secure authentication platform</p>
+                </div>
+
+                <div class="glass-card rounded-2xl p-8 shadow-2xl">
+                    <div class="mb-6">
+                        <h2 class="text-2xl font-semibold text-white mb-2">Welcome back</h2>
+                        <p class="text-gray-400 text-sm">Enter your credentials to access your account</p>
+                    </div>
+
+                    <form id="loginForm" class="space-y-5" th:action="@{/login}" method="post">
+                        <div class="space-y-2">
+                            <label for="role" class="block text-sm font-medium text-gray-300">
+                                Role
+                            </label>
+                            <div class="relative">
+                                <select id="role" name="role"
+                                        class="input-field w-full px-3 py-2 rounded-lg text-white placeholder-gray-500 text-sm appearance-none pr-8 cursor-pointer">
+                                    <option value="" disabled selected>Select your role</option>
+                                    <option value="admin">Administrator</option>
+                                    <option value="user">User</option>
+                                    <option value="guest">Guest</option>
+                                </select>
+
+                                <svg xmlns="http://www.w3.org/2000/svg"
+                                     class="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400 pointer-events-none"
+                                     fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                                </svg>
+                            </div>
+                        </div>
+
+                        <div class="space-y-2">
+                            <label for="username" class="block text-sm font-medium text-gray-300">
+                                Username
+                            </label>
+                            <input class="input-field w-full px-3 py-2 rounded-lg text-white placeholder-gray-500 text-sm"
+                                    type="text" id="username" name="username" placeholder="nameexample" required/>
+                        </div>
+
+                        <div class="space-y-2">
+                            <div class="flex items-center justify-between">
+                                <label for="password" class="block text-sm font-medium text-gray-300">
+                                    Password
+                                </label>
+                                <a href="#" class="text-xs text-gray-400 hover:text-white transition-colors">
+                                    Forgot password?
+                                </a>
+                            </div>
+                            <input class="input-field w-full px-3 py-2 rounded-lg text-white placeholder-gray-500 text-sm"
+                                   type="password" id="password" name="password" placeholder="••••••••" required/>
+                        </div>
+
+                        <button type="submit" class="btn-primary w-full px-3 py-2 rounded-lg font-semibold text-black text-sm shadow-lg">
+                            Sign in
+                        </button>
+                    </form>
+
+                    <div class="mt-6 text-center">
+                        <p class="text-sm text-gray-400">
+                            Don't have an account?
+                            <a href="#" class="text-white font-medium hover:underline">
+                                Sign up
+                            </a>
+                        </p>
+                    </div>
+
+                    <div class="mt-8 text-center">
+                        <p class="text-xs text-gray-500">A service to</p>
+                        <p class="text-xs text-gray-500">
+                            Joinify ‧ JoiniMessage ‧ Other
+                        </p>
+                    </div>
+
+                </div>
+
+                <div class="mt-8 text-center">
+                    <p class="text-xs text-gray-500">
+                        © 2025 Authora. All rights reserved.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
