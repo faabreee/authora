@@ -15,6 +15,7 @@ import org.springframework.security.oauth2.server.authorization.config.annotatio
 import org.springframework.security.oauth2.server.authorization.settings.AuthorizationServerSettings;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
+import org.springframework.web.cors.CorsConfiguration;
 
 import java.util.UUID;
 
@@ -30,6 +31,9 @@ public class AuthorizationServerConfig {
                 .with(authorizationServerConfigurer, (configurer) -> configurer
                         .oidc(Customizer.withDefaults())
                 )
+                .cors(cors -> cors.configurationSource(request ->
+                        corsConfiguration())
+                )
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/.well-known/**").permitAll()
                         .anyRequest().authenticated()
@@ -37,8 +41,12 @@ public class AuthorizationServerConfig {
                 .exceptionHandling(exceptions -> exceptions
                         .authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/login"))
                 )
-                .csrf(csrf -> csrf.ignoringRequestMatchers(authorizationServerConfigurer.getEndpointsMatcher()))
-                .oauth2ResourceServer(oauth2 -> oauth2.jwt(Customizer.withDefaults()));
+                .csrf(csrf ->
+                        csrf.ignoringRequestMatchers(authorizationServerConfigurer.getEndpointsMatcher())
+                )
+                .oauth2ResourceServer(oauth2 -> oauth2
+                        .jwt(Customizer.withDefaults())
+                );
 
         return http.build();
     }
@@ -66,6 +74,17 @@ public class AuthorizationServerConfig {
         return AuthorizationServerSettings.builder()
                 .issuer("http://localhost:8089")
                 .build();
+    }
+
+
+    @Bean
+    public CorsConfiguration corsConfiguration() {
+        CorsConfiguration config = new CorsConfiguration();
+        config.addAllowedOrigin("http://localhost:3000");
+        config.addAllowedHeader("*");
+        config.addAllowedMethod("*");
+        config.setAllowCredentials(true);
+        return config;
     }
 
 }
