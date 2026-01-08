@@ -64,7 +64,6 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
-    @Bean
     public void manageRedirect(HttpServletRequest request, HttpServletResponse response) throws IOException {
         var savedRequest = new HttpSessionRequestCache().getRequest(request, response);
         if (savedRequest != null) {
