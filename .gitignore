@@ -1,5 +1,6 @@
 .gradle
 target/
+!gradle/wrapper/gradle-wrapper.jarf
 .mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/

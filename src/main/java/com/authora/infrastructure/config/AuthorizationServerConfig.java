@@ -1,5 +1,6 @@
 package com.authora.infrastructure.config;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
@@ -8,6 +9,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
+import org.springframework.security.oauth2.core.oidc.OidcScopes;
 import org.springframework.security.oauth2.server.authorization.client.InMemoryRegisteredClientRepository;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClient;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClientRepository;
@@ -15,24 +17,33 @@ import org.springframework.security.oauth2.server.authorization.config.annotatio
 import org.springframework.security.oauth2.server.authorization.settings.AuthorizationServerSettings;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
-import org.springframework.web.cors.CorsConfiguration;
 
 import java.util.UUID;
 
 @Configuration
 public class AuthorizationServerConfig {
 
+    @Value("${app.auth.issuer}")
+    private String issuer;
+
+    @Value("${security.oauth2.client.id}")
+    private String clientId;
+
+    @Value("${security.oauth2.client.secret}")
+    private String clientSecret;
+
+    @Value("${security.oauth2.client.redirect-uri}")
+    private String redirectUri;
+
     @Bean
     @Order(1)
     public SecurityFilterChain authorizationServerSecurityFilterChain(HttpSecurity http) throws Exception {
         OAuth2AuthorizationServerConfigurer authorizationServerConfigurer = new OAuth2AuthorizationServerConfigurer();
 
-        http.securityMatcher(authorizationServerConfigurer.getEndpointsMatcher())
-                .with(authorizationServerConfigurer, (configurer) -> configurer
-                        .oidc(Customizer.withDefaults())
-                )
-                .cors(cors -> cors.configurationSource(request ->
-                        corsConfiguration())
+        http
+                .securityMatcher(authorizationServerConfigurer.getEndpointsMatcher())
+                .with(authorizationServerConfigurer, (configurer) ->
+                        configurer.oidc(Customizer.withDefaults())
                 )
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/.well-known/**").permitAll()
@@ -44,9 +55,9 @@ public class AuthorizationServerConfig {
                 .csrf(csrf ->
                         csrf.ignoringRequestMatchers(authorizationServerConfigurer.getEndpointsMatcher())
                 )
-                .oauth2ResourceServer(oauth2 -> oauth2
-                        .jwt(Customizer.withDefaults())
-                );
+                .oauth2ResourceServer(oauth2 -> oauth2.jwt(Customizer.withDefaults()))
+                .cors(Customizer.withDefaults())
+        ;
 
         return http.build();
     }
@@ -55,36 +66,24 @@ public class AuthorizationServerConfig {
     @Bean
     public RegisteredClientRepository registeredClientRepository(PasswordEncoder passwordEncoder) {
         RegisteredClient client = RegisteredClient.withId(UUID.randomUUID().toString())
-                .clientId("demo-client")
-                .clientSecret(passwordEncoder.encode("secret"))
+                .clientId(clientId)
+                .clientSecret(passwordEncoder.encode(clientSecret))
                 .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
                 .authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
-                .redirectUri("http://127.0.0.1:8082/login/oauth2/code/demo-client-oidc")
-                .scope("openid")
-                .scope("profile")
+                .redirectUri(redirectUri)
+                .scope(OidcScopes.OPENID)
+                .scope(OidcScopes.PROFILE)
                 .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
                 .build();
 
         return new InMemoryRegisteredClientRepository(client);
     }
 
-
     @Bean
     public AuthorizationServerSettings authorizationServerSettings() {
         return AuthorizationServerSettings.builder()
-                .issuer("http://localhost:8089")
+                .issuer(issuer)
                 .build();
-    }
-
-
-    @Bean
-    public CorsConfiguration corsConfiguration() {
-        CorsConfiguration config = new CorsConfiguration();
-        config.addAllowedOrigin("http://localhost:3000");
-        config.addAllowedHeader("*");
-        config.addAllowedMethod("*");
-        config.setAllowCredentials(true);
-        return config;
     }
 
 }

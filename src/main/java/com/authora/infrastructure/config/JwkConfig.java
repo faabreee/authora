@@ -18,18 +18,27 @@ import java.util.UUID;
 public class JwkConfig {
 
     @Bean
-    public JWKSource<SecurityContext> jwkSource() throws Exception {
-        KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance("RSA");
-        keyPairGenerator.initialize(2048);
-        KeyPair keyPair = keyPairGenerator.generateKeyPair();
-
-        RSAKey rsaKey = new RSAKey.Builder((RSAPublicKey) keyPair.getPublic())
-                .privateKey((RSAPrivateKey) keyPair.getPrivate())
-                .keyID(UUID.randomUUID().toString())
-                .build();
-
+    public JWKSource<SecurityContext> jwkSource() {
+        RSAKey rsaKey = generateRsa();
         JWKSet jwkSet = new JWKSet(rsaKey);
-        return (jwkSelector, securityContext) -> jwkSelector.select(jwkSet);
+
+        return (selector, context) -> selector.select(jwkSet);
+    }
+
+    private RSAKey generateRsa() {
+        try {
+            KeyPairGenerator generator = KeyPairGenerator.getInstance("RSA");
+            generator.initialize(2048);
+            KeyPair keyPair = generator.generateKeyPair();
+
+            return new RSAKey.Builder((RSAPublicKey) keyPair.getPublic())
+                    .privateKey((RSAPrivateKey) keyPair.getPrivate())
+                    .keyID(UUID.randomUUID().toString())
+                    .build();
+
+        } catch (Exception ex) {
+            throw new IllegalStateException("Error generating RSA keys", ex);
+        }
     }
 
 }
