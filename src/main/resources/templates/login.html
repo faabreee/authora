@@ -108,12 +108,17 @@
                         <button type="submit" class="btn-primary w-full px-3 py-2 rounded-lg font-semibold text-black text-sm shadow-lg">
                             Sign in
                         </button>
+
+                        <div th:if="${error}" class="alert alert-danger text-white">
+                            <p th:text="${error}" id="errorContainer"></p>
+                        </div>
+
                     </form>
 
                     <div class="mt-6 text-center">
                         <p class="text-sm text-gray-400">
                             Don't have an account?
-                            <a href="#" class="text-white font-medium hover:underline">
+                            <a href="/register" class="text-white font-medium hover:underline">
                                 Sign up
                             </a>
                         </p>

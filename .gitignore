@@ -1,4 +1,5 @@
-.gradle
+.gradle/
+gradle/
 target/
 !gradle/wrapper/gradle-wrapper.jarf
 !**/src/main/**/build/
