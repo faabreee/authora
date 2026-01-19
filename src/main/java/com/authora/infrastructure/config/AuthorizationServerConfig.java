@@ -34,8 +34,8 @@ public class AuthorizationServerConfig {
     @Value("${security.oauth2.client.secret}")
     private String clientSecret;
 
-    @Value("${security.oauth2.client.redirect-uri}")
-    private String redirectUri;
+    @Value("${security.oauth2.client.redirect-uri-valid}")
+    private String redirectUriValid;
 
     @Bean
     @Order(1)
@@ -73,12 +73,12 @@ public class AuthorizationServerConfig {
                 .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
                 .authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
                 .tokenSettings(TokenSettings.builder()
-                        .accessTokenTimeToLive(Duration.ofSeconds(30))   // ⏱ access token
-                        .refreshTokenTimeToLive(Duration.ofDays(7))      // 🔁 refresh token
+                        .accessTokenTimeToLive(Duration.ofSeconds(30))
+                        .refreshTokenTimeToLive(Duration.ofDays(7))
                         .reuseRefreshTokens(false)
                         .build()
                 )
-                .redirectUri(redirectUri)
+                .redirectUri(redirectUriValid) // validate this URI matches your client application
                 .scope(OidcScopes.OPENID)
                 .scope(OidcScopes.PROFILE)
                 .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)

@@ -2,14 +2,14 @@ spring:
   application:
     name: api-authora
   datasource:
-    url: jdbc:mysql://localhost:3309/joinify
-    username: root
-    password: 1970
+    url: jdbc:mysql://${BD_HOST}:${BD_PORT}/${BD_NAME}
+    username: ${BD_USERNAME:root}
+    password: ${BD_PASSWORD:12345}
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     hibernate:
       ddl-auto: none
-    show-sql: false
+    show-sql: ${SHOW_SQL:false}
     properties:
       hibernate:
         format_sql: true
@@ -19,14 +19,14 @@ security:
     client:
       id: demo-client
       secret: secret
-      redirect-uri: http://localhost:3000/authentication/login
+      redirect-uri-valid: http://localhost:3000/authentication/login
 
 server:
-  port: 8081
+  port: ${APP_PORT:8081}
 
 app:
   joinify:
     web:
       url: ${JOINIFY_WEB_URL:http://localhost:3000}
   auth:
-    issuer: http://localhost:8089
+    issuer: ${API_BACKBONE_URL:http://localhost:8089}
