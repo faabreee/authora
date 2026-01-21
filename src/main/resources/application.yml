@@ -1,4 +1,6 @@
 spring:
+  config:
+    import: optional:file:.env[.properties]
   application:
     name: api-authora
   datasource:
@@ -19,7 +21,7 @@ security:
     client:
       id: demo-client
       secret: secret
-      redirect-uri-valid: http://localhost:3000/authentication/login
+      redirect-uri-valid: ${JOINIFY_WEB_URL}/authentication/login
 
 server:
   port: ${APP_PORT:8081}
@@ -27,6 +29,6 @@ server:
 app:
   joinify:
     web:
-      url: ${JOINIFY_WEB_URL:http://localhost:3000}
+      url: ${JOINIFY_WEB_URL}
   auth:
-    issuer: ${API_BACKBONE_URL:http://localhost:8089}
+    issuer: ${API_BACKBONE_URL}
