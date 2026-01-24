@@ -1,4 +1,4 @@
-package com.authora.infrastructure.config;
+package com.authora.infrastructure.security.config;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

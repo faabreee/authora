@@ -1,7 +1,6 @@
-package com.authora.application.service;
+package com.authora.infrastructure.security.service;
 
-import com.authora.application.repository.IUserRepository;
-import com.authora.infrastructure.entity.UserEntity;
+import com.authora.application.port.out.IUserPersistencePort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -13,19 +12,19 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class DatabaseUserDetailsService implements UserDetailsService {
 
-    private final IUserRepository userRepository;
+    private final IUserPersistencePort userRepository;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        UserEntity userEntity = userRepository.findByUsername(username);
+        var user = userRepository.findByUsername(username);
 
-        if (userEntity == null) {
+        if (user == null) {
             throw new UsernameNotFoundException("User not found with username: " + username);
         }
 
         return User.builder()
-                .username(userEntity.getUsername())
-                .password(userEntity.getPassword())
+                .username(user.getUsername())
+                .password(user.getPassword())
                 .disabled(false)
                 .roles("USER")
                 .build();

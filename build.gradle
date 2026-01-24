@@ -36,10 +36,12 @@ dependencies {
     implementation 'org.springframework.security:spring-security-oauth2-authorization-server'
 
     implementation 'com.nimbusds:nimbus-jose-jwt:10.6'
+    implementation 'org.mapstruct:mapstruct:1.6.3'
 
     compileOnly 'org.projectlombok:lombok'
 
     annotationProcessor 'org.projectlombok:lombok'
+    annotationProcessor 'org.mapstruct:mapstruct-processor:1.6.3'
 
     runtimeOnly 'com.mysql:mysql-connector-j'
 

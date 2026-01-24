@@ -1,4 +1,4 @@
-package com.authora.infrastructure.entity;
+package com.authora.infrastructure.persistence.jpa.entity;
 
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -16,14 +16,21 @@ public class UserEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(length = 36)
+    @Column(length = 36, unique = true, nullable = false)
     private String uuid;
 
     @Column(unique = true, nullable = false)
     private String username;
 
+    private String email;
+
+    @Column(name = "email_verified")
+    private String emailVerified;
+
     @Column(nullable = false)
     private String password;
+
+    private Boolean enabled;
 
     private Integer status;
 

@@ -1,4 +1,4 @@
-package com.authora.infrastructure.config;
+package com.authora.infrastructure.security.oauth;
 
 import com.nimbusds.jose.jwk.JWKSet;
 import com.nimbusds.jose.jwk.source.JWKSource;
