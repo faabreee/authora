@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.io.IOException;
+import java.util.Date;
 
 @Controller
 @RequiredArgsConstructor
@@ -28,6 +29,14 @@ public class RegisterViewController {
 
     @PostMapping("/register")
     public void register(
+            @RequestParam Long documentTypeId,
+            @RequestParam String documentNumber,
+            @RequestParam String firstName,
+            @RequestParam String secondName,
+            @RequestParam String firstLastName,
+            @RequestParam String secondLastName,
+            @RequestParam Date birthDate,
+            @RequestParam Long genderId,
             @RequestParam String username,
             @RequestParam String password,
             HttpServletRequest request,
@@ -38,7 +47,18 @@ public class RegisterViewController {
             return;
         }
 
-        RegisterUserCommand registerUserCommand = new RegisterUserCommand(username, password);
+        RegisterUserCommand registerUserCommand = new RegisterUserCommand(
+                documentTypeId,
+                documentNumber,
+                firstName,
+                secondName,
+                firstLastName,
+                secondLastName,
+                birthDate,
+                genderId,
+                username,
+                password
+        );
 
         registerUser.registerUser(registerUserCommand);
 

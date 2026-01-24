@@ -1,5 +1,6 @@
 package com.authora.domain.model;
 
+import com.authora.application.dto.RegisterUserCommand;
 import com.authora.shared.valueobject.EntityStatus;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,12 +19,14 @@ public class User {
     private String emailVerified;
     private String password;
     private Boolean enabled;
+    private Person person;
     private Integer status;
 
-    public User(String username, String password) {
+    public User(RegisterUserCommand registerUserCommand, String passwordHash, Person person) {
         this.uuid = UUID.randomUUID().toString();
-        this.username = username;
-        this.password = password;
+        this.username = registerUserCommand.username().trim();
+        this.password = passwordHash;
+        this.person = person;
         this.status = EntityStatus.ACTIVE.getValue();
     }
 }

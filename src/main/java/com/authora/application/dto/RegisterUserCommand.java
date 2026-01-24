@@ -1,4 +1,16 @@
 package com.authora.application.dto;
 
-public record RegisterUserCommand(String username, String password) {
-}
+import java.util.Date;
+
+public record RegisterUserCommand(
+        Long documentTypeId,
+        String documentNumber,
+        String firstName,
+        String secondName,
+        String firstLastName,
+        String secondLastName,
+        Date birthDate,
+        Long genderId,
+        String username,
+        String password
+) {}
