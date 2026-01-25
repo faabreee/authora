@@ -1,7 +1,6 @@
 package com.authora.infrastructure.security.web;
 
 import com.authora.application.dto.RegisterUserCommand;
-import com.authora.application.port.out.ILoginAfterRegisterPort;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -13,32 +12,29 @@ import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
+import org.springframework.security.web.context.SecurityContextRepository;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 
 @Component
 @RequiredArgsConstructor
-public class SpringSecurityLoginAdapter implements ILoginAfterRegisterPort {
+public class SpringSecurityLoginAdapter {
 
     private final AuthenticationManager authenticationManager;
 
-    @Override
     public void login(RegisterUserCommand registerUserCommand, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        Authentication authenticated = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        registerUserCommand.username().trim(),
-                        registerUserCommand.password().trim()
-                ));
+        Authentication unauthenticated = new UsernamePasswordAuthenticationToken(registerUserCommand.username(), registerUserCommand.password());
+
+        Authentication authenticated = authenticationManager.authenticate(unauthenticated);
 
         SecurityContext context = SecurityContextHolder.createEmptyContext();
         context.setAuthentication(authenticated);
         SecurityContextHolder.setContext(context);
 
-        new HttpSessionSecurityContextRepository()
-                .saveContext(context, request, response);
+        SecurityContextRepository repo = new HttpSessionSecurityContextRepository();
+        repo.saveContext(context, request, response);
 
-        new SavedRequestAwareAuthenticationSuccessHandler()
-                .onAuthenticationSuccess(request, response, authenticated);
+        new SavedRequestAwareAuthenticationSuccessHandler().onAuthenticationSuccess(request, response, authenticated);
     }
 }

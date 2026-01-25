@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Primary;
 
 @Primary
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
-public interface IPersonDboMapper {
+public interface PersonDboMapper {
     Person toDomain(PersonEntity personEntity);
     PersonEntity toEntity(Person person);
 }

@@ -11,6 +11,9 @@ public record RegisterUserCommand(
         String secondLastName,
         Date birthDate,
         Long genderId,
+        String phone,
         String username,
-        String password
+        String password,
+        String email,
+        String emailVerified
 ) {}

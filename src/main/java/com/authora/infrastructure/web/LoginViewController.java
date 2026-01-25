@@ -1,4 +1,4 @@
-package com.authora.interfaces.web;
+package com.authora.infrastructure.web;
 
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Controller;

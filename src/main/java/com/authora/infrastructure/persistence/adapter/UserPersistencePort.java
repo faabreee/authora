@@ -1,6 +1,5 @@
 package com.authora.infrastructure.persistence.adapter;
 
-import com.authora.application.port.out.IUserPersistencePort;
 import com.authora.domain.model.User;
 import com.authora.infrastructure.persistence.jpa.entity.UserEntity;
 import com.authora.infrastructure.persistence.jpa.mapper.IUserDboMapper;
@@ -10,7 +9,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class UserPersistencePort implements IUserPersistencePort {
+public class UserPersistencePort implements com.authora.application.port.out.UserPersistencePort {
     private final IUserDboMapper userDboMapper;
     private final IUserJpaRepository userJpaRepository;
 
@@ -24,7 +23,6 @@ public class UserPersistencePort implements IUserPersistencePort {
     public User save(User user) {
         UserEntity userEntity = userDboMapper.toEntity(user);
         userEntity = userJpaRepository.saveAndFlush(userEntity);
-
         return userDboMapper.toDomain(userEntity);
     }
 

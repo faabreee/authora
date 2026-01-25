@@ -1,18 +1,17 @@
 package com.authora.infrastructure.persistence.adapter;
 
-import com.authora.application.port.out.IPersonPersistencePort;
 import com.authora.domain.model.Person;
 import com.authora.infrastructure.persistence.jpa.entity.PersonEntity;
-import com.authora.infrastructure.persistence.jpa.mapper.IPersonDboMapper;
-import com.authora.infrastructure.persistence.jpa.repository.IPersonJpaRepository;
+import com.authora.infrastructure.persistence.jpa.mapper.PersonDboMapper;
+import com.authora.infrastructure.persistence.jpa.repository.PersonJpaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class PersonPersistencePort implements IPersonPersistencePort {
-    private final IPersonJpaRepository personJpaRepository;
-    private final IPersonDboMapper personDboMapper;
+public class PersonPersistencePort implements com.authora.application.port.out.PersonPersistencePort {
+    private final PersonJpaRepository personJpaRepository;
+    private final PersonDboMapper personDboMapper;
 
     @Override
     public Person save(Person person) {

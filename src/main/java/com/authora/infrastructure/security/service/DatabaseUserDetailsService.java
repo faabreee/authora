@@ -1,6 +1,6 @@
 package com.authora.infrastructure.security.service;
 
-import com.authora.application.port.out.IUserPersistencePort;
+import com.authora.application.port.out.UserPersistencePort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class DatabaseUserDetailsService implements UserDetailsService {
 
-    private final IUserPersistencePort userRepository;
+    private final UserPersistencePort userRepository;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {

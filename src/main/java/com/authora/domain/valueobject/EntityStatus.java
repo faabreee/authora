@@ -1,4 +1,4 @@
-package com.authora.shared.valueobject;
+package com.authora.domain.valueobject;
 
 import lombok.Getter;
 

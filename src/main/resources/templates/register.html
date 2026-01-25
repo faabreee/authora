@@ -64,6 +64,22 @@
 
             <form id="loginForm" class="space-y-5" th:action="@{/register}" method="post">
                 <div class="space-y-2">
+                    <label for="documentTypeId" class="block text-sm font-medium text-gray-300">
+                        Document Type
+                    </label>
+                    <input class="input-field w-full px-3 py-2 rounded-lg text-white placeholder-gray-500 text-sm"
+                           type="text" id="documentTypeId" name="documentTypeId"/>
+                </div>
+
+                <div class="space-y-2">
+                    <label for="documentNumber" class="block text-sm font-medium text-gray-300">
+                        Document Number
+                    </label>
+                    <input class="input-field w-full px-3 py-2 rounded-lg text-white placeholder-gray-500 text-sm"
+                           type="text" id="documentNumber" name="documentNumber"/>
+                </div>
+
+                <div class="space-y-2">
                     <label for="firstName" class="block text-sm font-medium text-gray-300">
                         First Name
                     </label>
@@ -96,11 +112,27 @@
                 </div>
 
                 <div class="space-y-2">
-                    <label for="phoneNumber" class="block text-sm font-medium text-gray-300">
+                    <label for="birthDate" class="block text-sm font-medium text-gray-300">
+                        Birth Date
+                    </label>
+                    <input class="input-field w-full px-3 py-2 rounded-lg text-white placeholder-gray-500 text-sm"
+                           type="date" id="birthDate" name="birthDate"/>
+                </div>
+
+                <div class="space-y-2">
+                    <label for="genderId" class="block text-sm font-medium text-gray-300">
+                        Gender
+                    </label>
+                    <input class="input-field w-full px-3 py-2 rounded-lg text-white placeholder-gray-500 text-sm"
+                           type="text" id="genderId" name="genderId"/>
+                </div>
+
+                <div class="space-y-2">
+                    <label for="phone" class="block text-sm font-medium text-gray-300">
                         Phone Number
                     </label>
                     <input class="input-field w-full px-3 py-2 rounded-lg text-white placeholder-gray-500 text-sm"
-                           type="text" id="phoneNumber" name="phoneNumber"/>
+                           type="text" id="phone" name="phone"/>
                 </div>
 
                 <div class="space-y-2">
@@ -109,6 +141,14 @@
                     </label>
                     <input class="input-field w-full px-3 py-2 rounded-lg text-white placeholder-gray-500 text-sm"
                            type="text" id="email" name="email"/>
+                </div>
+
+                <div class="space-y-2">
+                    <label for="emailVerified" class="block text-sm font-medium text-gray-300">
+                        Email Verified
+                    </label>
+                    <input class="input-field w-full px-3 py-2 rounded-lg text-white placeholder-gray-500 text-sm"
+                           type="text" id="emailVerified" name="emailVerified"/>
                 </div>
 
                 <div class="space-y-2">

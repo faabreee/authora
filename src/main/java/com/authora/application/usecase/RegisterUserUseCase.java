@@ -1,10 +1,12 @@
 package com.authora.application.usecase;
 
-import com.authora.application.port.in.IRegisterUser;
-import com.authora.application.port.out.IPersonPersistencePort;
+import com.authora.application.port.in.RegisterUser;
+import com.authora.application.port.out.PersonPersistencePort;
+import com.authora.application.port.out.UserProfilePersistencePort;
 import com.authora.domain.model.Person;
 import com.authora.domain.model.User;
-import com.authora.application.port.out.IUserPersistencePort;
+import com.authora.application.port.out.UserPersistencePort;
+import com.authora.domain.model.UserProfile;
 import com.authora.domain.service.UserDomainService;
 import com.authora.application.dto.RegisterUserCommand;
 import lombok.RequiredArgsConstructor;
@@ -14,29 +16,28 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
-public class RegisterUserUseCase implements IRegisterUser {
+public class RegisterUserUseCase implements RegisterUser {
     private final UserDomainService userDomainService;
-    private final IUserPersistencePort userPersistencePort;
-    private final IPersonPersistencePort personPersistencePort;
     private final PasswordEncoder passwordEncoder;
+
+    private final UserPersistencePort userPersistencePort;
+    private final PersonPersistencePort personPersistencePort;
+    private final UserProfilePersistencePort userProfilePersistencePort;
 
     @Override
     @Transactional
     public void registerUser(RegisterUserCommand registerUserCommand) {
-        userDomainService.validateNewUser(registerUserCommand.username().trim());
-
         Person person = new Person(registerUserCommand);
         person = personPersistencePort.save(person);
 
-        User user = new User(
-                registerUserCommand,
-                passwordEncoder.encode(registerUserCommand.password().trim()),
-                person
-        );
+        User user = new User(registerUserCommand, passwordEncoder.encode(registerUserCommand.password().trim()), person);
+        user = userPersistencePort.save(user);
 
-        userPersistencePort.save(user);
+        UserProfile userProfile = new UserProfile(registerUserCommand, user);
+        userProfilePersistencePort.save(userProfile);
     }
 
+    @Transactional
     public boolean validateExistenceUser(String username) {
         return userDomainService.findByUsername(username.trim()) != null;
     }

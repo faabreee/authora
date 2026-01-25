@@ -32,7 +32,7 @@ public class UserEntity {
 
     private Boolean enabled;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "person_id", referencedColumnName = "id")
     private PersonEntity person;
 
